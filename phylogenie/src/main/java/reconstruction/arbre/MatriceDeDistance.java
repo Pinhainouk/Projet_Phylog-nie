@@ -23,6 +23,10 @@ public class MatriceDeDistance {
 		return nomsSequences;
 	}
 	
+	public String getNomSequence(int i) {
+		return nomsSequences.get(i);
+	}
+	
 	public void setNomsSequences(int i, String nouveauNom) {
 		nomsSequences.set(i, nouveauNom);
 	}
@@ -35,29 +39,13 @@ public class MatriceDeDistance {
 	public double trouverDistanceMin() {
 		double distanceMin = Double.MAX_VALUE;
 		for (int i = 0; i < matrice.length; i++) {
-	        for (int j = i + 1; j < matrice.length; j++) {
-	            if (matrice[i][j] > 0 && matrice[i][j] < distanceMin) {
+	        for (int j = i + 1; j < matrice[i].length; j++) {
+	            if (matrice[i][j] != 0 && matrice[i][j] < distanceMin) {
 	            	distanceMin = matrice[i][j];
 	            }
 	        }
 		}
 	    return distanceMin;
-	}
-	
-	// Méthode pour trouver les indices des clusters/séquences à fusionner avec la distance minimale
-	public int[] trouverClustersAFusionner() {
-		double distanceMin = trouverDistanceMin();
-	    int[] clustersAFusionner = new int[2];       
-	    for (int i = 0; i < matrice.length; i++) {
-	        for (int j = i + 1; j < matrice.length; j++) {
-	            if (matrice[i][j] == distanceMin) {
-	            	clustersAFusionner[0] = i;
-	                clustersAFusionner[1] = j;
-	                return clustersAFusionner; // retourne dès que la paire de clusters est trouvée
-	            }
-	        }
-	    }     
-	    return clustersAFusionner; // retourne un tableau avec [0,0] si aucune paire de clusters n'est trouvée
 	}
 	
 	public void afficherMatrice() {
@@ -123,4 +111,13 @@ public class MatriceDeDistance {
         // Mise à jour de la matrice
         this.matrice = nouvelleMatrice;
     }
+	
+	// Méthode qui met à jour la matrice en supprimant lignes et colonnes des clusters fusionnés et ajoute une nouvelle ligne et colonne pour le nouveau cluster
+		public void majMatrice(int clusterA, int clusterB, double[] nouvellesDistances) {
+			diminuerTailleMatrice(clusterB);
+			diminuerTailleMatrice(clusterA);
+			ajouterLigneColonne(nouvellesDistances);
+			System.out.println("Matrice après mise à jour:");
+		    afficherMatrice();
+		}
 }
