@@ -48,6 +48,7 @@ public class MatriceDeDistance {
 	    return distanceMin;
 	}
 	
+	// Méthode pour afficher les valeurs de la matrice
 	public void afficherMatrice() {
 		int maxLength = 0;
         for (int i = 0; i < matrice.length; i++) {
@@ -57,15 +58,14 @@ public class MatriceDeDistance {
 	       }
 	   }
      // Affichage des noms de séquences en haut
-        System.out.print("  "); // espace pour aligner avec les noms de colonnes
+        System.out.print("   "); // espace pour aligner avec les noms de colonnes
         for (int i = 0; i < matrice.length; i++) {
 	        System.out.printf("%" + maxLength + "s ", nomsSequences.get(i));
 	    }
-	    System.out.println();
-	    
+	    System.out.println();    
 	    // Affichage de la matrice avec les noms de lignes
 	    for (int i = 0; i < matrice.length; i++) {
-	        System.out.printf("%-3s", nomsSequences.get(i)); // nom de la séquence
+	        System.out.printf("%-10s", nomsSequences.get(i)); // nom de la séquence
 	        for (int j = 0; j < matrice[i].length; j++) {
 	            System.out.printf("%" + maxLength + ".1f" + "|", matrice[i][j]);
 	        }
@@ -95,29 +95,42 @@ public class MatriceDeDistance {
         this.nomsSequences = nouveauxNomsSequences;
     }
 	
+	// Méthode pour enlever un cluster à un index donné en paramètre = diminuerTailleMatrice
+		public void removeCluster(int index) {
+	        for (int i = index; i < matrice.length - 1; i++) {
+	            for (int j = 0; j < matrice.length; j++) {
+	            	matrice[i][j] = matrice[i + 1][j];
+	            }
+	        }
+	        for (int i = 0; i < matrice.length; i++) {
+	            for (int j = index; j < matrice.length - 1; j++) {
+	            	matrice[i][j] = matrice[i][j + 1];
+	            }
+	        }
+	        double[][] newDistances = new double[matrice.length - 1][matrice.length - 1];
+	        for (int i = 0; i < newDistances.length; i++) {
+	            for (int j = 0; j < newDistances.length; j++) {
+	                newDistances[i][j] = matrice[i][j];
+	            }
+	        }
+	        matrice = newDistances;
+	        nomsSequences.remove(index);
+	    }
+	
 	public void ajouterLigneColonne(double[] nouvellesDistances) {
-		int tailleActuelle = getTailleMatrice();
+        int tailleActuelle = getTailleMatrice();
         int nouvelleTaille = tailleActuelle + 1;
         double[][] nouvelleMatrice = new double[nouvelleTaille][nouvelleTaille];
+
         for (int i = 0; i < tailleActuelle; i++) {
             for (int j = 0; j < tailleActuelle; j++) {
                 nouvelleMatrice[i][j] = matrice[i][j];
             }
         }
-        for (int i = 0; i < nouvellesDistances.length; i++) {
-            nouvelleMatrice[nouvelleTaille - 1][i] = nouvellesDistances[i];
+        for (int i = 0; i < tailleActuelle; i++) {
             nouvelleMatrice[i][nouvelleTaille - 1] = nouvellesDistances[i];
-        }     
-        // Mise à jour de la matrice
-        this.matrice = nouvelleMatrice;
+            nouvelleMatrice[nouvelleTaille - 1][i] = nouvellesDistances[i];
+        }
+        matrice = nouvelleMatrice;
     }
-	
-	// Méthode qui met à jour la matrice en supprimant lignes et colonnes des clusters fusionnés et ajoute une nouvelle ligne et colonne pour le nouveau cluster
-		public void majMatrice(int clusterA, int clusterB, double[] nouvellesDistances) {
-			diminuerTailleMatrice(clusterB);
-			diminuerTailleMatrice(clusterA);
-			ajouterLigneColonne(nouvellesDistances);
-			System.out.println("Matrice après mise à jour:");
-		    afficherMatrice();
-		}
 }

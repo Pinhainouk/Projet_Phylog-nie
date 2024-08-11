@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class Noeud {
 	public String nom;	
-	private ArrayList<Noeud> enfants;
-	private double distance;
+	public ArrayList<Noeud> enfants;
+	public double distance;
 	
 	public Noeud (String n) {
 		this.nom = n;
@@ -13,17 +13,18 @@ public class Noeud {
 		this.distance = 0.0;
 	}
 	
-	// Noeud avec enfants
-	//public Noeud (String n, Noeud g, Noeud d, double dist) {
-		//this.nom = n;
-		//this.gauche = g;
-		//this.droit = d;
-		//this.distance = dist;
-	//}
+	public boolean estFeuille() {
+		return enfants.isEmpty();
+	}
 	
 	public void ajouterEnfant(Noeud enfant) {
 		enfants.add(enfant);
 	}
+	
+	public void ajouterEnfant(Noeud enfant, double distance) {
+        enfant.setDistance(distance); // Set distance à l'enfant
+        enfants.add(enfant);
+    }
 	
 	public String getNom() {
 		return nom;
@@ -66,8 +67,9 @@ public class Noeud {
             }
             chaineNewick.append(")");
         }
-        if (distance != 0.0) {
-        	chaineNewick.append(":").append(distance);
+	    // Ajouter la distance au noeud si elle est définie
+        if (distance > 0.0) {
+        	chaineNewick.append(":").append(String.format("%.2f", distance));
         }
     }
 
