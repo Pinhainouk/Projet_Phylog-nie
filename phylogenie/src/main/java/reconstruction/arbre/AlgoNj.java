@@ -119,10 +119,4 @@ public class AlgoNj extends MethodeConstructionArbre{
         clusters.add(clusterFinal);
         System.out.println("Fusion finale pour former " + clusterFinal.nom);
     }
-
-    // Méthode pour générer le format Newick à partir de l'arbre NJ construit
-    public String genererNewick() {
-        Noeud racineArbre = executerNJ(); // On obtient la racine de l'arbre NJ
-        return racineArbre.toString() + ";";
-    } 
 }

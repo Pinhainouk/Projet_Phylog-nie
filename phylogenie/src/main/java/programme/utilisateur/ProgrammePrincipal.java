@@ -1,17 +1,22 @@
 package programme.utilisateur;
-import java.io.File;
-import java.util.Scanner;
-
-import alignement.sequences.AlignementMultipleAdn;
-import alignement.sequences.AlignementMultipleProteine;
+//import java.io.File;
+//import alignement.sequences.AlignementMultipleAdn;
+//import alignement.sequences.AlignementMultipleProteine;
 
 public class ProgrammePrincipal {
 
 	public static void main(String[] args) {
-		InterfaceUtilisateur.creerFenetrePrincipale("Phylogénie", "Logiciel de reconstruction d'arbres phylogénétiques");
-		//String[] numerosAccessionsProteines = new String[] {"A0A3G2Y4Z7", "A0A2S1J4M6", "A0A6M4F9Y7", "A0A0U3VAT9", "A0A2R2XFF2", "Q6Y8R6", "Q9WLD7", "Q76638", "A0A159W4K4", "Q9Q072"}; //OK
-		//String[] numerosAccessionsADN = new String[] {"MH705157.1", "MH078546.1", "U52953.1", "KU168271.1", "AJ006022.1", "L20571.1", "AF082339.1","L07625.1", "KU892415.1", "X52154.1"}; //A transformer en ArrayList?
-		try {  
+		InterfaceUtilisateur interfaceUtilisateur = new InterfaceUtilisateur();  
+		interfaceUtilisateur.creerFenetrePrincipale("Phylogénie", "Logiciel de reconstruction d'arbres phylogénétiques");
+	}
+}
+
+// numéros accessions protéines : A0A3G2Y4Z7 A0A2S1J4M6 A0A6M4F9Y7 A0A0U3VAT9 A0A2R2XFF2 Q6Y8R6 Q9WLD7 Q76638 A0A159W4K4 Q9Q072
+// numéros accessions adn : MH705157.1 MH078546.1 U52953.1 KU168271.1 AJ006022.1 L20571.1 AF082339.1 L07625.1 KU892415.1 X52154.1 
+
+//String[] numerosAccessionsProteines = new String[] {"A0A3G2Y4Z7", "A0A2S1J4M6", "A0A6M4F9Y7", "A0A0U3VAT9", "A0A2R2XFF2", "Q6Y8R6", "Q9WLD7", "Q76638", "A0A159W4K4", "Q9Q072"}; //OK
+//String[] numerosAccessionsADN = new String[] {"MH705157.1", "MH078546.1", "U52953.1", "KU168271.1", "AJ006022.1", "L20571.1", "AF082339.1","L07625.1", "KU892415.1", "X52154.1"}; 
+		//try {  
 			//AlignementMultipleProteine.multipleAlignementProteine(numerosAccessionsProteines);  //OK
 			//AlignementMultipleAdn.multipleAlignementADN(numerosAccessionsADN); //Problème de mémoire
 			//File fichierAdnEnv = new File ("/home/elodie/Documents/Projet_phylogenie/Sequences/sequences_adn_env_entieres.fasta"); //n'aligne que 9 séquences et c'est long
@@ -36,8 +41,6 @@ public class ProgrammePrincipal {
 			//AlignementMultipleAdn.multipleAlignementADN(fichierEnvAdn300_600); //OK
 			//File fichierEnvAdn600_900 = new File("/home/elodie/Documents/Projet_phylogenie/Sequences/sequences_env_600-900.fasta"); //OK
 			//AlignementMultipleAdn.multipleAlignementADN(fichierEnvAdn600_900); //OK
-		} catch (Exception e){  
-			e.printStackTrace();  
-		} 
-	}
-}
+		//} catch (Exception e){  
+			//e.printStackTrace();  
+		//} 

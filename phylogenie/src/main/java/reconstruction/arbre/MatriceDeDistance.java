@@ -1,6 +1,7 @@
 package reconstruction.arbre;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class MatriceDeDistance {
 	protected double[][] matrice;
@@ -54,11 +55,11 @@ public class MatriceDeDistance {
         for (int i = 0; i < matrice.length; i++) {
             for (int j = 0; j < matrice[i].length; j++) {
             	// Stringformat pour formater la distance avec une précision d'un chiffre après la virgule %.1f
-            	maxLength = Math.max(maxLength, String.format("%.1f", matrice[i][j]).length());
+            	maxLength = Math.max(maxLength, String.format(Locale.US, "%.2f", matrice[i][j]).length());
 	       }
 	   }
      // Affichage des noms de séquences en haut
-        System.out.print("   "); // espace pour aligner avec les noms de colonnes
+        System.out.print("         "); // espace pour aligner avec les noms de colonnes
         for (int i = 0; i < matrice.length; i++) {
 	        System.out.printf("%" + maxLength + "s ", nomsSequences.get(i));
 	    }
@@ -67,7 +68,7 @@ public class MatriceDeDistance {
 	    for (int i = 0; i < matrice.length; i++) {
 	        System.out.printf("%-10s", nomsSequences.get(i)); // nom de la séquence
 	        for (int j = 0; j < matrice[i].length; j++) {
-	            System.out.printf("%" + maxLength + ".1f" + "|", matrice[i][j]);
+	        	 System.out.printf(Locale.US, "%" + maxLength + ".2f" + "|", matrice[i][j]);
 	        }
 	        System.out.println();
 	    }

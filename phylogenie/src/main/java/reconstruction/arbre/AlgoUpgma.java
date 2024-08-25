@@ -33,18 +33,29 @@ public class AlgoUpgma extends MethodeConstructionArbre{
         Noeud clusterGauche = clusters.get(cluster1);
         Noeud clusterDroit = clusters.get(cluster2);
         Noeud nouveauCluster = new Noeud(clusterGauche.nom + "/" + clusterDroit.nom);
-        // crée noeud enfant et la distance = taille de la branche
-        nouveauCluster.ajouterEnfant(clusterGauche);
-        nouveauCluster.ajouterEnfant(clusterDroit);
+        // Ajouter les enfants et assigner les distances correctement
+        double distanceGauche = distance / 2.0 - clusterGauche.getDistance();
+        double distanceDroit = distance / 2.0 - clusterDroit.getDistance();
+        nouveauCluster.ajouterEnfant(clusterGauche, distanceGauche);
+        nouveauCluster.ajouterEnfant(clusterDroit, distanceDroit);
+        // crée noeud enfant et la distance = taille de la branche // Ajouter les enfants et assigner les distances correctement
+        //nouveauCluster.ajouterEnfant(clusterGauche);
+        //nouveauCluster.ajouterEnfant(clusterGauche, clusterGauche.getDistance() + distance / 2.0);
+        //nouveauCluster.ajouterEnfant(clusterDroit);
+        //nouveauCluster.ajouterEnfant(clusterDroit, clusterDroit.getDistance() + distance / 2.0);
         nouveauCluster.setDistance(distance / 2.0); // Diviser par 2 pour la taille de la branche correcte
         // Mettre à jour la liste des clusters
         clusters.add(nouveauCluster);
+        clusters.remove(cluster2); // Suppression dans l'ordre inverse pour éviter le décalage
         clusters.remove(cluster1);
-        clusters.remove(cluster2-1); // attention : décalage dans l'arraylist       
+        //clusters.remove(cluster1);
+        //clusters.remove(cluster2-1); // attention : décalage dans l'arraylist       
         ArrayList<String> nouveauxNomsSequences = new ArrayList<>(matrice.getNomsSequences());
         nouveauxNomsSequences.add(nouveauCluster.nom);
+        nouveauxNomsSequences.remove(cluster2);
         nouveauxNomsSequences.remove(cluster1);
-        nouveauxNomsSequences.remove(cluster2-1); // attention : décalage dans l'arraylist
+        //nouveauxNomsSequences.remove(cluster1);
+        //nouveauxNomsSequences.remove(cluster2-1); // attention : décalage dans l'arraylist
         for (int i = 0; i < nouveauxNomsSequences.size(); i++) {
    	        matrice.setNomsSequences(i, nouveauxNomsSequences.get(i));
         }  
@@ -68,6 +79,7 @@ public class AlgoUpgma extends MethodeConstructionArbre{
         }
         // Débogage
         System.out.println("Nouvelles distances après fusion des clusters " + cluster1 + " et " + cluster2 + ":");
+        //System.out.println("Nouvelles distances après fusion des clusters " + matrice.getNomSequence(cluster1) + " et " + matrice.getNomSequence(cluster2) + ":"); à revoir
         for (int i = 0; i < nouvellesDistances.length; i++) {
             System.out.print(nouvellesDistances[i] + " ");
         }
@@ -75,44 +87,13 @@ public class AlgoUpgma extends MethodeConstructionArbre{
         return nouvellesDistances;
    }
 	   
-    	// Méthode qui met à jour la matrice en supprimant lignes et colonnes des clusters fusionnés et ajoute une nouvelle ligne et colonne pour le nouveau cluster
- 		public void majMatrice(int clusterA, int clusterB, double[] nouvellesDistances) {
- 			matrice.diminuerTailleMatrice(clusterB);
- 			matrice.diminuerTailleMatrice(clusterA);
- 			matrice.ajouterLigneColonne(nouvellesDistances);
- 			// Débogage
- 			System.out.println("Matrice après mise à jour:");
- 			matrice.afficherMatrice();
- 		}
- 		
- 		//public String genererNewick(Noeud racine) {
- 		//    StringBuilder sb = new StringBuilder();
- 		 //   construireNewick(sb, racine);
- 		//    sb.append(";");
- 		//    return sb.toString();
- 		//}
-
- 		//private void construireNewick(StringBuilder sb, Noeud noeud) {
- 		 //   if (noeud.estFeuille()) {
- 		 //       sb.append(noeud.nom);
- 		 //   } else {
- 		  //      sb.append("(");
- 		  //      for (int i = 0; i < noeud.enfants.size(); i++) {
- 		  //          construireNewick(sb, noeud.enfants.get(i));
- 		  //          if (i < noeud.enfants.size() - 1) {
- 		  //             sb.append(",");
- 		  //          }
- 		  //      }
- 		  //      sb.append(")");
- 		 //       if (noeud.distance > 0) {
- 		  //          sb.append(":").append(String.format("%.2f", noeud.distance));
- 		  //      }
- 		  //  }
- 		//}
-    
-    // Méthode pour générer le format Newick à partir de l'arbre UPGMA construit
-    public String genererNewick() {
-        Noeud racineArbre = executerUpgma(); // On obtient la racine de l'arbre UPGMA
-        return racineArbre.toString() + ";";
-    }
+    // Méthode qui met à jour la matrice en supprimant lignes et colonnes des clusters fusionnés et ajoute une nouvelle ligne et colonne pour le nouveau cluster
+ 	public void majMatrice(int clusterA, int clusterB, double[] nouvellesDistances) {
+ 		matrice.diminuerTailleMatrice(clusterB);
+ 		matrice.diminuerTailleMatrice(clusterA);
+ 		matrice.ajouterLigneColonne(nouvellesDistances);
+ 		// Débogage
+ 		System.out.println("Matrice après mise à jour:");
+ 		matrice.afficherMatrice();
+ 	}
 }

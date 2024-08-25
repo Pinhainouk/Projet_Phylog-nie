@@ -1,6 +1,7 @@
 package reconstruction.arbre;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class Noeud {
 	public String nom;	
@@ -69,8 +70,7 @@ public class Noeud {
         }
 	    // Ajouter la distance au noeud si elle est définie
         if (distance > 0.0) {
-        	chaineNewick.append(":").append(String.format("%.2f", distance));
+        	chaineNewick.append(":").append(String.format(Locale.US, "%.2f", distance));
         }
     }
-
 }

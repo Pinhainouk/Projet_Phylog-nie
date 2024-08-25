@@ -14,12 +14,12 @@ public class MatriceDeDistanceAdn extends MatriceDeDistance{
 	}
 	
 	// Méthode qui crée une matrice de distance pour des séquences ADN
-	public double[][] MatriceDeDistanceObserveeADN(Profile<DNASequence, NucleotideCompound> sequencesAlignees) {
+	public double[][] MatriceDeDistanceObserveeAdn(Profile<DNASequence, NucleotideCompound> sequencesAlignees) {
 		int nombreSequences = sequencesAlignees.getAlignedSequences().size();
 		matrice = new double[nombreSequences][nombreSequences];
 		for (int i = 0; i < nombreSequences; i++) {
 			for (int j = i + 1; j < nombreSequences; j++) {
-				double distance = calculerDistanceObserveeADN(sequencesAlignees.getAlignedSequence(i), sequencesAlignees.getAlignedSequence(j));
+				double distance = calculerDistanceObserveeAdn(sequencesAlignees.getAlignedSequence(i), sequencesAlignees.getAlignedSequence(j));
 				matrice[i][j] = distance;
 				matrice[j][i] = distance;
 			}
@@ -28,7 +28,7 @@ public class MatriceDeDistanceAdn extends MatriceDeDistance{
 	}
 	
 	// Méthode qui calcule les distances observées entre toutes les paires de séquences de l'alignement
-	public static double calculerDistanceObserveeADN(AlignedSequence<DNASequence, NucleotideCompound> sequence1, AlignedSequence<DNASequence, NucleotideCompound> sequence2) {
+	public static double calculerDistanceObserveeAdn(AlignedSequence<DNASequence, NucleotideCompound> sequence1, AlignedSequence<DNASequence, NucleotideCompound> sequence2) {
 		double longueurSequencesAlignees = sequence1.getLength(); 
 		double correspondances = 0.0; 
 		double similarite = correspondances / longueurSequencesAlignees; 

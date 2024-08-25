@@ -13,7 +13,7 @@ public class MatriceDeDistanceProteine extends MatriceDeDistance{
 	}
 	
 	// Méthode qui crée une matrice de distance pour des séquences protéiques
-	public double[][] MatriceDeDistanceObserveeProteine(Profile<ProteinSequence, AminoAcidCompound> sequencesAlignees) {
+	public double[][] matriceDeDistanceObserveeProteine(Profile<ProteinSequence, AminoAcidCompound> sequencesAlignees) {
 		int nombreSequences = sequencesAlignees.getAlignedSequences().size();
 		matrice = new double[nombreSequences][nombreSequences];
 		nomsSequences.clear();
