@@ -129,7 +129,7 @@ public class AlignementMultipleProteine extends AlignementMultiple {
 	    	    System.out.println("Erreur -> " + "Aucun numéro d'accession valide trouvé.");
 	        } else {
 	        	JOptionPane.showMessageDialog(null, "Alignement multiple terminé avec succès."); // Si l'alignement est réussi, affichez un message de succès
-	        	System.out.println("Alignement multiple terminé. Ouverture de la nouvelle fenêtre...");
+	        	System.out.println("Alignement multiple terminé.");
 	        }
 	    }catch (Exception ex) {
 	        	gestionException(ex, "Erreur -> lors de l'alignement multiple des séquences protéiques.");
@@ -145,7 +145,7 @@ public class AlignementMultipleProteine extends AlignementMultiple {
 		    	if (fichierFasta != null) {
 		    		alignement = AlignementMultipleProteine.multipleAlignementProteine(fichierFasta);
 		    		JOptionPane.showMessageDialog(null, "Alignement multiple terminé avec succès.");
-		    	    System.out.println("Alignement multiple terminé. Ouverture de la nouvelle fenêtre..."); 
+		    	    System.out.println("Alignement multiple terminé."); 
 		    	}
 		    } catch (Exception ex) {
 		    	gestionException(ex, "Erreur -> lors de l'alignement multiple des séquences protéiques.");

@@ -1,17 +1,42 @@
 package programme.utilisateur;
 //import java.io.File;
+
+//import org.biojava.nbio.core.alignment.template.Profile;
+//import org.biojava.nbio.core.sequence.ProteinSequence;
+//import org.biojava.nbio.core.sequence.compound.AminoAcidCompound;
+
 //import alignement.sequences.AlignementMultipleAdn;
 //import alignement.sequences.AlignementMultipleProteine;
+//import reconstruction.arbre.AlgoUpgma;
+//import reconstruction.arbre.FichierFormatNewick;
+//import reconstruction.arbre.FichierImageArbre;
+//import reconstruction.arbre.MatriceDeDistance;
+//import reconstruction.arbre.MatriceDeDistanceProteine;
 
 public class ProgrammePrincipal {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		InterfaceUtilisateur interfaceUtilisateur = new InterfaceUtilisateur();  
 		interfaceUtilisateur.creerFenetrePrincipale("Phylogénie", "Logiciel de reconstruction d'arbres phylogénétiques");
+		
+		//File fichierEnv1_100 = new File("/home/elodie/Documents/Projet_tuteure_phylogenie/Sequences/sequences_env_1-100.fasta"); //OK
+		//Profile<ProteinSequence, AminoAcidCompound> alignement = AlignementMultipleProteine.multipleAlignementProteine(fichierEnv1_100); //OK
+		//System.out.println(alignement);
+		//MatriceDeDistanceProteine matrice = new MatriceDeDistanceProteine();
+		//matrice.ajouterDistancesObserveesProteines(alignement);
+		//matrice.ajouterNomsSequences(alignement);
+		//matrice.afficherMatrice();
+		//AlgoUpgma upgma = new AlgoUpgma(matrice);
+		//FichierFormatNewick formatNewick = new FichierFormatNewick();
+		//String f = formatNewick.genererNewick(upgma);
+		//FichierImageArbre image = new FichierImageArbre(formatNewick);
+		//image.genererImageArbre("/home/elodie/Documents/Projet_tuteure_phylogenie/test_arbre.nwk", "/home/elodie/Documents/Projet_tuteure_phylogenie/test_arbre.svg");
+		//System.out.println("Format Newick UPGMA généré :");
+        //System.out.println(f);
+		
 	}
 }
-
-// numéros accessions protéines : A0A3G2Y4Z7 A0A2S1J4M6 A0A6M4F9Y7 A0A0U3VAT9 A0A2R2XFF2 Q6Y8R6 Q9WLD7 Q76638 A0A159W4K4 Q9Q072
+// numéros accessions protéines uniprot : A0A3G2Y4Z7 A0A2S1J4M6 A0A6M4F9Y7 A0A0U3VAT9 A0A2R2XFF2 Q6Y8R6 Q9WLD7 Q76638 A0A159W4K4 Q9Q072
 // numéros accessions adn : MH705157.1 MH078546.1 U52953.1 KU168271.1 AJ006022.1 L20571.1 AF082339.1 L07625.1 KU892415.1 X52154.1 
 
 //String[] numerosAccessionsProteines = new String[] {"A0A3G2Y4Z7", "A0A2S1J4M6", "A0A6M4F9Y7", "A0A0U3VAT9", "A0A2R2XFF2", "Q6Y8R6", "Q9WLD7", "Q76638", "A0A159W4K4", "Q9Q072"}; //OK

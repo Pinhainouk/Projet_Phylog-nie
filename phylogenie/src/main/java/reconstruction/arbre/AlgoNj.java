@@ -10,7 +10,7 @@ public class AlgoNj extends MethodeConstructionArbre{
     public Noeud executerNJ() {
         while (n > 2) {
         	double[] divergences = calculerDivergence();
-            MatriceDeDistance matriceCorrigee = calculerMatriceCorrigee(divergences);
+        	MatriceDeDistance matriceCorrigee = calculerMatriceCorrigee(divergences);
             System.out.println("Affichage de la matrice corrigée : ");
             matriceCorrigee.afficherMatrice();
             int[] clustersAFusionner = trouverClustersAFusionner(matriceCorrigee);

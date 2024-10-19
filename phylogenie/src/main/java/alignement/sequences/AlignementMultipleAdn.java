@@ -132,7 +132,7 @@ public class AlignementMultipleAdn extends AlignementMultiple{
 	        } else {
 	        // Si l'alignement est réussi, affichez un message de succès
 	        JOptionPane.showMessageDialog(null, "Alignement multiple terminé avec succès.");
-	        System.out.println("Alignement multiple terminé. Ouverture de la nouvelle fenêtre...");
+	        System.out.println("Alignement multiple terminé.");
 	        }
 	    } catch (Exception ex) {
 	        gestionException(ex, "Erreur -> lors de l'alignement multiple des séquences d'ADN.");
@@ -148,7 +148,7 @@ public class AlignementMultipleAdn extends AlignementMultiple{
 				if (fichierFasta != null) {
 			    	alignement = AlignementMultipleAdn.multipleAlignementAdn(fichierFasta);
 			    	JOptionPane.showMessageDialog(null, "Alignement multiple terminé avec succès.");
-			    	System.out.println("Alignement multiple terminé. Ouverture de la nouvelle fenêtre...");
+			    	System.out.println("Alignement multiple terminé.");
 			    }   
 			 } catch (Exception ex) {
 				 gestionException(ex, "Erreur -> lors de l'alignement multiple des séquences d'ADN.");

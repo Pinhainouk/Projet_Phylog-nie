@@ -52,7 +52,7 @@ public class Noeud {
 	//Construction récursive : La méthode toString est conçue pour être récursive. 
 	//Si le nœud est une feuille (pas d'enfants), elle retourne simplement le nom du nœud. 
 	//Sinon, elle construit une chaîne qui représente les enfants du nœud entre parenthèses.
-	// Si une distance est définie pour le nœud, elle est ajoutée après le nom du nœud avec le format :distance.
+	// Si une distance est définie pour le nœud, elle est ajoutée après le nom du nœud avec le format : distance.
 	private void toNewick(StringBuilder chaineNewick) {
 	        if (enfants.isEmpty()) {
             // Si le nœud est une feuille, retourner le nom du nœud
@@ -70,7 +70,7 @@ public class Noeud {
         }
 	    // Ajouter la distance au noeud si elle est définie
         if (distance > 0.0) {
-        	chaineNewick.append(":").append(String.format(Locale.US, "%.2f", distance));
+        	chaineNewick.append(":").append(String.format(Locale.US, "%.3f", distance));
         }
     }
 }

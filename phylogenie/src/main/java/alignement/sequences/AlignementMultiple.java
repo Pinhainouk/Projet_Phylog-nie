@@ -31,7 +31,7 @@ public class AlignementMultiple {
 		 return listeNumAccession;
 	 }
 	            
-	// Méthode qui demande à l'utilisateur de saisir le chemin du fichier fasta et crée un objet new File
+	// Méthode qui traite le chemin du fichier fasta saisi dans le champs de texte de l'interface et crée un objet File
 	public static File traiterCheminFasta (JTextField cheminFasta) {
 		 String chemin = cheminFasta.getText().trim();
 		 if (chemin.isEmpty()) {

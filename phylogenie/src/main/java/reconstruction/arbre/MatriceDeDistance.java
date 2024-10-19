@@ -5,11 +5,16 @@ import java.util.Locale;
 
 public class MatriceDeDistance {
 	protected double[][] matrice;
-	protected ArrayList<String> nomsSequences; // voir pour changer en String[][]
+	protected ArrayList<String> nomsSequences; 
 	
-	public MatriceDeDistance(double[][] distances, ArrayList<String> noms) {
-		this.matrice = distances;
-		this.nomsSequences = noms;
+	public MatriceDeDistance() {
+		this.matrice = null;
+		this.nomsSequences = new ArrayList<String>() ;
+	}
+	
+	public MatriceDeDistance(double[][] matrice, ArrayList<String> nomsSequences) {
+	    this.matrice = matrice;
+	    this.nomsSequences = nomsSequences;
 	}
 	
 	public double getDistance(int i, int j) {
@@ -56,22 +61,22 @@ public class MatriceDeDistance {
             for (int j = 0; j < matrice[i].length; j++) {
             	// Stringformat pour formater la distance avec une précision d'un chiffre après la virgule %.1f
             	maxLength = Math.max(maxLength, String.format(Locale.US, "%.2f", matrice[i][j]).length());
-	       }
-	   }
-     // Affichage des noms de séquences en haut
+            }
+        }
+        // Affichage des noms de séquences en haut
         System.out.print("         "); // espace pour aligner avec les noms de colonnes
-        for (int i = 0; i < matrice.length; i++) {
-	        System.out.printf("%" + maxLength + "s ", nomsSequences.get(i));
-	    }
-	    System.out.println();    
-	    // Affichage de la matrice avec les noms de lignes
-	    for (int i = 0; i < matrice.length; i++) {
-	        System.out.printf("%-10s", nomsSequences.get(i)); // nom de la séquence
-	        for (int j = 0; j < matrice[i].length; j++) {
-	        	 System.out.printf(Locale.US, "%" + maxLength + ".2f" + "|", matrice[i][j]);
-	        }
-	        System.out.println();
-	    }
+       	for (int i = 0; i < matrice.length; i++) {
+	       System.out.printf("%" + maxLength + "s ", nomsSequences.get(i));
+	   }
+	   System.out.println();    
+	   	// Affichage de la matrice avec les noms de lignes
+	   	for (int i = 0; i < matrice.length; i++) {
+	       	System.out.printf("%-10s", nomsSequences.get(i)); // nom de la séquence
+	       	for (int j = 0; j < matrice[i].length; j++) {
+	       		System.out.printf(Locale.US, "%" + maxLength + ".2f" + "|", matrice[i][j]);
+	       	}
+	       	System.out.println();
+	   	}
 	}              
 	
 	// Méthode qui diminue la taille de la matrice
@@ -96,33 +101,32 @@ public class MatriceDeDistance {
         this.nomsSequences = nouveauxNomsSequences;
     }
 	
-	// Méthode pour enlever un cluster à un index donné en paramètre = diminuerTailleMatrice
-		public void removeCluster(int index) {
-	        for (int i = index; i < matrice.length - 1; i++) {
-	            for (int j = 0; j < matrice.length; j++) {
-	            	matrice[i][j] = matrice[i + 1][j];
-	            }
+	// Méthode pour enlever un cluster à un index donné en paramètre = diminuerTailleMatrice = A REVOIR
+	public void removeCluster(int index) {
+	    for (int i = index; i < matrice.length - 1; i++) {
+	        for (int j = 0; j < matrice.length; j++) {
+	        	matrice[i][j] = matrice[i + 1][j];
 	        }
-	        for (int i = 0; i < matrice.length; i++) {
-	            for (int j = index; j < matrice.length - 1; j++) {
-	            	matrice[i][j] = matrice[i][j + 1];
-	            }
-	        }
-	        double[][] newDistances = new double[matrice.length - 1][matrice.length - 1];
-	        for (int i = 0; i < newDistances.length; i++) {
-	            for (int j = 0; j < newDistances.length; j++) {
-	                newDistances[i][j] = matrice[i][j];
-	            }
-	        }
-	        matrice = newDistances;
-	        nomsSequences.remove(index);
 	    }
+	    for (int i = 0; i < matrice.length; i++) {
+	        for (int j = index; j < matrice.length - 1; j++) {
+	            	matrice[i][j] = matrice[i][j + 1];
+	        }
+	    }
+	    double[][] newDistances = new double[matrice.length - 1][matrice.length - 1];
+	    for (int i = 0; i < newDistances.length; i++) {
+	        for (int j = 0; j < newDistances.length; j++) {
+	            newDistances[i][j] = matrice[i][j];
+	        }
+	    }
+	    matrice = newDistances;
+	    nomsSequences.remove(index);
+	}
 	
 	public void ajouterLigneColonne(double[] nouvellesDistances) {
         int tailleActuelle = getTailleMatrice();
         int nouvelleTaille = tailleActuelle + 1;
         double[][] nouvelleMatrice = new double[nouvelleTaille][nouvelleTaille];
-
         for (int i = 0; i < tailleActuelle; i++) {
             for (int j = 0; j < tailleActuelle; j++) {
                 nouvelleMatrice[i][j] = matrice[i][j];
