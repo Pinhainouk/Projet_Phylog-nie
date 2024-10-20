@@ -12,7 +12,7 @@ public class testMatrice {
 	            {5, 4, 0, 2},
 	            {7, 1, 2, 0}};
         ArrayList<String> sequences = new ArrayList<>(Arrays.asList("A", "B", "C", "D"));
-		MatriceDeDistance m1 = new MatriceDeDistance();
+		MatriceDeDistances m1 = new MatriceDeDistances();
 		m1.matrice = distances;
 		m1.nomsSequences = sequences;
 		  //Afficher la matrice initiale
@@ -36,7 +36,7 @@ public class testMatrice {
             {6, 9, 6, 5, 0, 8},
             {8, 11, 8, 9, 8, 0}};
         ArrayList<String> s = new ArrayList<>(Arrays.asList("A", "B", "C", "D", "E", "F"));
-        MatriceDeDistance m = new MatriceDeDistance(); 
+        MatriceDeDistances m = new MatriceDeDistances(); 
         System.out.println("********************NJ*********************");
 		System.out.println("Afficher matrice initiale : ");
 		m.afficherMatrice();
@@ -54,7 +54,7 @@ public class testMatrice {
             {6, 9, 6, 5, 0, 8},
             {8, 11, 8, 9, 8, 0}};
         ArrayList<String> s3 = new ArrayList<>(Arrays.asList("A", "B", "C", "D", "E", "F"));
-        MatriceDeDistance m3 = new MatriceDeDistance(); 
+        MatriceDeDistances m3 = new MatriceDeDistances(); 
 		System.out.println("Afficher matrice initiale : ");
 		m3.afficherMatrice();
 		//Créer une instance de Upgma et exécuter l'algorithme		
@@ -74,7 +74,7 @@ public class testMatrice {
         	{98,84,92,86,89,90,0,148},
         	{148,136,152,142,142,142,148,0}};
         ArrayList<String> seqmatrice = new ArrayList<>(Arrays.asList("Chien", "Ours", "Racoon", "Belette", "Phoque", "Otarie", "Chat", "Singe"));
-        MatriceDeDistance exmatrice = new MatriceDeDistance(); 
+        MatriceDeDistances exmatrice = new MatriceDeDistances(); 
 		System.out.println("Afficher matrice initiale : ");
 		exmatrice.afficherMatrice();
 		AlgoUpgma upgmaex = new AlgoUpgma(exmatrice);
@@ -93,7 +93,7 @@ public class testMatrice {
         	{98,84,92,86,89,90,0,148},
         	{148,136,152,142,142,142,148,0}};
         ArrayList<String> smatrice = new ArrayList<>(Arrays.asList("Chien", "Ours", "Racoon", "Belette", "Phoque", "Otarie", "Chat", "Singe"));
-        MatriceDeDistance matrice2 = new MatriceDeDistance(); 
+        MatriceDeDistances matrice2 = new MatriceDeDistances(); 
 		System.out.println("Afficher matrice initiale : ");
 		matrice2.afficherMatrice();
         AlgoNj njex = new AlgoNj(matrice2);

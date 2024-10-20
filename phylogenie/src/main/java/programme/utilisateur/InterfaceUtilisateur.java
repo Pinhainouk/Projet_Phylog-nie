@@ -13,20 +13,28 @@ import org.biojava.nbio.core.sequence.compound.AminoAcidCompound;
 import alignement.sequences.AlignementMultiple;
 import alignement.sequences.AlignementMultipleAdn;
 import alignement.sequences.AlignementMultipleProteine;
-import reconstruction.arbre.MatriceDeDistance;
-import reconstruction.arbre.MatriceDeDistanceAdn;
-import reconstruction.arbre.MatriceDeDistanceProteine;
+import reconstruction.arbre.MatriceDeDistances;
+import reconstruction.arbre.MatriceDeDistancesAdn;
+import reconstruction.arbre.MatriceDeDistancesProteine;
 import reconstruction.arbre.AlgoUpgma;
 import reconstruction.arbre.FichierFormatNewick;
 import reconstruction.arbre.FichierImageArbre;
 import reconstruction.arbre.AlgoNj;
 
+/**
+ * La classe InterfaceUtilisateur fournit une interface graphique utilisateur conviviale
+ * pour un logiciel de reconstruction d'arbres phylogénétiques.
+ * Elle permet aux utilisateurs de sélectionner le type de séquences (protéiques ou nucléotidiques)
+ * d'aligner les séquences, de choisir l'algorithme (UPGMA ou NJ) 
+ * pour reconstruire un arbre phylogénétique.
+ * 
+ */
 public class InterfaceUtilisateur {
 	private static boolean isProtein = false;
 	private static boolean isDna = false;
 	private Profile<ProteinSequence, AminoAcidCompound> alignementProteine;
 	private Profile<DNASequence, NucleotideCompound> alignementAdn;
-	private MatriceDeDistance matrice;
+	private MatriceDeDistances matrice;
 	private JRadioButton upgmaRadioBouton; 
 	private JRadioButton njRadioBouton;    
 	private AlgoUpgma upgma;
@@ -34,10 +42,19 @@ public class InterfaceUtilisateur {
 	private FichierFormatNewick fichierNewick;
 	private FichierImageArbre fichierSvg;
 	
+	/**
+     * Constructeur de la classe InterfaceUtilisateur.
+     */
 	 public InterfaceUtilisateur() {
 	 }
 	
-	// Créer la fenêtre principale	
+	 /**
+	     * Crée la fenêtre principale de l'interface utilisateur.
+	     *
+	     * @param nomFenetrePrincipale Le nom de la fenêtre principale.
+	     * @param titreLogiciel Le titre du logiciel.
+	     * @return La fenêtre principale créée.
+	     */
 	public JFrame creerFenetrePrincipale(String nomFenetrePrincipale, String titreLogiciel) { 
 		JFrame fenetrePrincipale = new JFrame(nomFenetrePrincipale);
 	    fenetrePrincipale.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -56,7 +73,21 @@ public class InterfaceUtilisateur {
 	    return fenetrePrincipale;
 	}
 	
-	 // Créer la fenêtre secondaire avec 2 boutons et le bouton retour 
+	/**
+     * Crée la fenêtre secondaire avec 2 boutons et le bouton retour.
+     *
+     * @param nomFenetreSecondaire2 Le nom de la fenêtre secondaire.
+     * @param titreLogiciel Le titre du logiciel.
+     * @param sousTitreChoix Le sous-titre pour les choix.
+     * @param bouton1 Le nom du premier bouton.
+     * @param actionBouton1 L'action à réaliser lors du clic sur le premier bouton.
+     * @param bouton2 Le nom du deuxième bouton.
+     * @param actionBouton2 L'action à réaliser lors du clic sur le deuxième bouton.
+     * @param fenetrePrincipale La fenêtre principale.
+     * @param boutonRetour Le nom du bouton de retour.
+     * @param actionBoutonRetour L'action à réaliser lors du clic sur le bouton de retour.
+     * @return La fenêtre secondaire créée.
+     */
 	private static JFrame creerFenetreSecondaire(String nomFenetreSecondaire2, String titreLogiciel, String sousTitreChoix, 
 			String bouton1, ActionListener actionBouton1,
 			String bouton2, ActionListener actionBouton2,  
@@ -77,7 +108,12 @@ public class InterfaceUtilisateur {
 		return fenetreSecondaire;	
 	}
 	
-	// Créer le panel principal avec le titre du logiciel      
+	/**
+     * Crée le panel principal avec le titre du logiciel.
+     *
+     * @param titre Le titre à afficher dans le panel.
+     * @return Le panel principal créé.
+     */  
 	private static JPanel creerPanelPrincipal(String titre) { 
         JPanel panelPrincipal = new JPanel(); // Panel principal avec BoxLayout pour disposer les composants verticalement
         panelPrincipal.setLayout(new BoxLayout(panelPrincipal, BoxLayout.Y_AXIS));
@@ -92,7 +128,16 @@ public class InterfaceUtilisateur {
         return panelPrincipal;
     }
 	
-	// Créer le panel avec les boutons et le titre de l'action à réaliser dans la fenêtre
+	/**
+     * Crée le panel avec les boutons et le titre de l'action à réaliser dans la fenêtre.
+     *
+     * @param titreChoix Le titre des choix à afficher.
+     * @param nomBouton1 Le nom du premier bouton.
+     * @param actionBouton1 L'action à réaliser lors du clic sur le premier bouton.
+     * @param nomBouton2 Le nom du deuxième bouton.
+     * @param actionBouton2 L'action à réaliser lors du clic sur le deuxième bouton.
+     * @return Le panel de choix créé.
+     */
 	private static JPanel creerPanelChoix(String titreChoix, String nomBouton1, ActionListener actionBouton1, 
 		String nomBouton2, ActionListener actionBouton2) { 
 		JPanel panelChoix = new JPanel();
@@ -109,7 +154,11 @@ public class InterfaceUtilisateur {
 		return panelChoix;
 	}
 	
-	// Créer le panel du bouton aide
+	/**
+     * Crée le panel du bouton aide.
+     *
+     * @return Le panel du bouton aide créé.
+     */
 	private static JPanel creerPanelBoutonAide() { 
         JPanel panelBoutonAide = new JPanel();
         panelBoutonAide.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 50));
@@ -123,7 +172,9 @@ public class InterfaceUtilisateur {
         return panelBoutonAide;
     }
 	
-	// Méthode qui affiche le message d'aide dans une fenêtre d'information
+	/**
+     * Affiche un message d'aide dans une fenêtre d'information.
+     */
 	private static void afficherMessageAide() { 
         String message = "Pour utiliser ce logiciel de reconstruction d'arbre phylogénétique :\n\n"
                        + "1. Cliquez sur le type de séquences avec lequel vous souhaitez créer un arbre phylogénétique.\n\n"
@@ -137,11 +188,20 @@ public class InterfaceUtilisateur {
                        + "6. Cliquez sur -Générer l'arbre- : "
                        + "Cette action ouvrira une boite de dialogue vous invitant à choisir le chemin où \n"
                        + "enregistrer le fichier au format de Newick et enregistrera automatiquement l'arbre "
-                       + "au format image SVG au même emplacement.";
+                       + "au format image SVG au même emplacement."
+                       + "L'image de l'arbre s'ouvre automatique après l'enregistrement.";
         JOptionPane.showMessageDialog(null, message, "Aide", JOptionPane.INFORMATION_MESSAGE);
     }
 	
-	// Créer le panel des deux boutons avec action
+	/**
+     * Crée un panneau avec deux boutons.
+     *
+     * @param nomBouton1 le nom du premier bouton
+     * @param actionBouton1 l'action à effectuer lorsque le premier bouton est cliqué
+     * @param nomBouton2 le nom du second bouton
+     * @param actionBouton2 l'action à effectuer lorsque le second bouton est cliqué
+     * @return Le panneau de boutons créé.
+     */
 	private static JPanel creerPanel2Boutons(String nomBouton1, ActionListener actionBouton1, 
 		String nomBouton2, ActionListener actionBouton2) { 
 	    JPanel panelBoutons = new JPanel(); // Créer le panel des boutons 
@@ -166,7 +226,12 @@ public class InterfaceUtilisateur {
 	    return panelBoutons;
 	}
 	
-	// Créer le panel du bouton retour			
+	 /**
+     * Crée le panneau pour le bouton de retour.
+     *
+     * @param parentFenetre la fenêtre parent à laquelle ce panneau sera lié
+     * @return Le panneau contenant le bouton de retour.
+     */
 	private static JPanel creerPanelBoutonRetour(JFrame parentFenetre) { 
 		JPanel panelBoutonRetour = new JPanel();// Créer le panel du bouton retour
 		panelBoutonRetour.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 50));
@@ -185,7 +250,13 @@ public class InterfaceUtilisateur {
 	    return panelBoutonRetour;
 	}
 	
-	// Créer le panel du bouton retour			
+	/**
+     * Crée le panneau pour le bouton de l'arbre.
+     *
+     * @param nomBoutonArbre le nom du bouton de l'arbre
+     * @param actionBoutonArbre l'action à effectuer lorsque le bouton est cliqué
+     * @return Le panneau contenant le bouton d'arbre.
+     */	
 	private static JPanel creerPanelBoutonArbre(String nomBoutonArbre, ActionListener actionBoutonArbre) { 
 		JPanel panelBoutonArbre = new JPanel();// Créer le panel du bouton retour
 		panelBoutonArbre.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 50));
@@ -202,7 +273,19 @@ public class InterfaceUtilisateur {
 	}
 		
 		
-	// Créer le panel pour la fenêtre création de l'arbre avec les choix
+	 /**
+     * Crée un panneau pour la fenêtre de création de l'arbre avec les choix de saisie pour faire l'alignement.
+     *
+     * @param nomSaisie1 le nom du premier champ de saisie
+     * @param saisie le champ de texte pour la saisie
+     * @param actionBoutonValider l'action à effectuer lorsque le bouton "Aligner" est cliqué
+     * @param nomSaisie2 le nom du second champ de saisie
+     * @param nomBoutonRadio1 le nom du premier bouton radio
+     * @param nomBoutonRadio2 le nom du second bouton radio
+     * @param nomBouton1 le nom du bouton pour générer l'arbre
+     * @param actionBouton1 l'action à effectuer lorsque le bouton pour générer l'arbre est cliqué
+     * @return Le panneau de champs avec labels créé.
+     */
 	private JPanel creerPanelChampsAvecLabel(String nomSaisie1, JTextField saisie, ActionListener actionBoutonValider, 
 		String nomSaisie2, String nomBoutonRadio1, String nomBoutonRadio2,
 		String nomBouton1, ActionListener actionBouton1) { 		
@@ -217,7 +300,14 @@ public class InterfaceUtilisateur {
 		return panelChamps;
 	}
 	
-	// Créer le panel du champs de saisie avec le label		
+	/**
+     * Crée un panneau pour le champ de saisie avec un label.
+     *
+     * @param nomSaisie1 le nom du champ de saisie
+     * @param saisie le champ de texte pour la saisie
+     * @param actionBoutonValider l'action à effectuer lorsque le bouton "Aligner" est cliqué
+     * @return Le panneau de saisie avec label créé.
+     */
 	private static JPanel creerPanelSaisieAvecBouton(String nomSaisie1, JTextField saisie, ActionListener actionBoutonValider) { 
 		JPanel panelSaisie = new JPanel(); // Créer le panel du champs de saisie
 		panelSaisie.setLayout(new BoxLayout(panelSaisie, BoxLayout.Y_AXIS));		
@@ -242,7 +332,14 @@ public class InterfaceUtilisateur {
 		return panelSaisie;
 	}
 	
-	// Créer le panel boutons radio avec le label 2
+	/**
+     * Crée un panneau pour les boutons radio avec un label.
+     *
+     * @param nomSaisie2 le nom du champ de saisie associé aux boutons radio
+     * @param nomBoutonRadio1 le nom du premier bouton radio
+     * @param nomBoutonRadio2 le nom du second bouton radio
+     * @return Le panneau contenant les boutons radio créé.
+     */
 	private JPanel creerPanelBoutonsRadio(String nomSaisie2, String nomBoutonRadio1, 
 		String nomBoutonRadio2) { 
 		JPanel panelRadio = new JPanel(); // Créer le panel boutons radio
@@ -250,16 +347,13 @@ public class InterfaceUtilisateur {
 		JLabel label2 = new JLabel(nomSaisie2); // Créer le label 2
 		label2.setFont(new Font("TimesRoman", Font.BOLD, 26));
 		label2.setAlignmentX(Component.CENTER_ALIGNMENT);  
-		// Créer une icône personnalisée pour les ronds des boutons radios
-	    Icon customIcon = new Icon() {
+		
+	    Icon customIcon = new Icon() { // Créer une icône personnalisée pour les ronds des boutons radios
 	    private int size = 28; // Taille du rond (peut être ajustée)
-	    public void paintIcon(Component c, Graphics g, int x, int y) {
-            // Dessiner le rond du bouton radio
+	    public void paintIcon(Component c, Graphics g, int x, int y) { // Dessiner le rond du bouton radio           
             g.setColor(Color.BLACK);
-            g.drawOval(x, y, size, size);
-            
-            // Si sélectionné, remplir le rond
-            if (((JRadioButton) c).isSelected()) {
+            g.drawOval(x, y, size, size);         
+            if (((JRadioButton) c).isSelected()) { // Si sélectionné, remplir le rond
                 g.fillOval(x + 4, y + 4, size - 8, size - 8);
             }
         }      
@@ -292,7 +386,11 @@ public class InterfaceUtilisateur {
     	return panelRadio;
     	}
 	
-	// Méthode qui ouvre une fenêtre secondaire avec 2 choix de chargement des séquences si on clique sur Protéines
+	/**
+     * Ouvre une fenêtre secondaire avec deux choix de chargement des séquences si on clique sur Protéines.
+     *
+     * @param parentFenetre la fenêtre parent à laquelle cette nouvelle fenêtre sera liée
+     */
 	private void choixProteines(JFrame parentFenetre) { 
 		isDna = false;
 		isProtein = true;
@@ -307,7 +405,11 @@ public class InterfaceUtilisateur {
         parentFenetre.setVisible(false);
 	}
 	
-	// Méthode qui ouvre une fenêtre secondaire avec 2 choix de chargement des séquences si on clique sur Nucléotides
+	/**
+     * Ouvre une fenêtre secondaire avec deux choix de chargement des séquences si on clique sur Nucléotides.
+     *
+     * @param parentFenetre la fenêtre parent à laquelle cette nouvelle fenêtre sera liée
+     */
 	private void choixNucleotides(JFrame parentFenetre) {
 		isProtein = false;
 		isDna = true;
@@ -323,7 +425,11 @@ public class InterfaceUtilisateur {
 		parentFenetre.setVisible(false);
 	}
 	
-	// Méthode qui ouvre la fenêtre de saisie des numéros d'accessions	
+	/**
+     * Ouvre la fenêtre de saisie des numéros d'accessions.
+     *
+     * @param parentFenetre la fenêtre parent à laquelle cette nouvelle fenêtre sera liée
+     */
 	private void choixNumAccessions(JFrame parentFenetre) { 
         JFrame fenetreNumAccessions = new JFrame("Numéros d'accessions"); // Créer une nouvelle fenêtre
         fenetreNumAccessions.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -345,7 +451,11 @@ public class InterfaceUtilisateur {
         parentFenetre.setVisible(false);
     }
 	
-	// Méthode qui ouvre la fenêtre de saisie du fasta
+	/**
+     * Ouvre la fenêtre de saisie du fichier fasta.
+     *
+     * @param parentFenetre la fenêtre parent à laquelle cette nouvelle fenêtre sera liée
+     */
 	private void choixFasta(JFrame parentFenetre) { 
 		JFrame fenetreFasta = new JFrame ("Fichier fasta"); // Créer une nouvelle fenêtre
 		fenetreFasta.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -367,7 +477,12 @@ public class InterfaceUtilisateur {
 		parentFenetre.setVisible(false);
 	}
 			
-	// Méhode qui crée l'action de traiter les numéros d'accessions saisis (les range dans une arrayList, vérifie leur validité et les aligne)
+	/**
+     * Crée l'action de traiter les numéros d'accessions saisis.
+     *
+     * @param numAccessions le champ de texte contenant les numéros d'accessions saisis
+     * @return L'action à exécuter lorsque le bouton "Aligner" est cliqué.
+     */
 	private ActionListener creerActionNumAccessions(JTextField numAccessions) {
 	    return e1 -> {
 	    	ArrayList<String> numerosAccessions = AlignementMultiple.traiterSaisieNumAccessions(numAccessions);
@@ -385,7 +500,12 @@ public class InterfaceUtilisateur {
 	    };
 	}
 	
-	// Méhode qui crée l'action de traiter la saisie du chemin du fichier fasta (le range dans un File, vérifie sa validité et aligne les séquences)	
+	/**
+     * Crée l'action de traiter la saisie du chemin du fichier fasta.
+     *
+     * @param fasta le champ de texte contenant le chemin du fichier fasta saisi
+     * @return L'action à exécuter lorsque le bouton "Aligner" est cliqué.
+     */
 	private ActionListener creerActionFasta(JTextField fasta) {
 		return e1 -> {
 	        File fichierFasta = AlignementMultiple.traiterCheminFasta(fasta); 
@@ -403,7 +523,11 @@ public class InterfaceUtilisateur {
 		};
 	}
 	
-	// Méthode qui crée l'arbre
+	/**
+     * Génère l'arbre en fonction des séquences alignées et de l'algorithme sélectionné.
+     *
+     * @return L'action à exécuter lorsque le bouton "Générer l'arbre" est cliqué.
+     */
 	private ActionListener genererArbre() { 
 		return e1 ->{
 			try {				
@@ -415,7 +539,6 @@ public class InterfaceUtilisateur {
 					JOptionPane.showMessageDialog(null, "Aucun algorithme sélectionné.", "Erreur", JOptionPane.ERROR_MESSAGE);
 				} 
 			} catch (IllegalStateException ex) {
-	            // Capture et gestion spécifique des exceptions d'alignement non réalisé
 	            JOptionPane.showMessageDialog(null, ex.getMessage(), "Erreur d'alignement", JOptionPane.ERROR_MESSAGE);
 			} catch(Exception e) {
 			e.printStackTrace();
@@ -424,22 +547,26 @@ public class InterfaceUtilisateur {
 		};	
 	}
 	
-	// Méthode qui vérifie que l'alignement est valide, crée la matrice, exécute l'algo UPGMA, crée le format de Newick et l'image SVG de l'arbre
+	/**
+     * Vérifie que l'alignement est valide et exécute l'algorithme UPGMA pour générer un arbre.
+     *
+     * @throws IllegalStateException si l'alignement n'est pas valide
+     */
 	private void executerAlgoUpgma() {    
 	    try {
 	    	verifierAlignement();
 	    	if (isDna) {
-	            System.out.println("Alignement ADN présent : " + (alignementAdn != null));
-	        }// Vérification si l'alignement est null avant d'exécuter les calculs
+	            System.out.println("Alignement ADN présent : " + (alignementAdn != null)); // Vérification si l'alignement est null avant d'exécuter les calculs
+	        }
 	    	if (isProtein) {
-	    		matrice = new MatriceDeDistanceProteine();
-	    		((MatriceDeDistanceProteine) matrice).ajouterDistancesObserveesProteines(alignementProteine);
-	    		((MatriceDeDistanceProteine) matrice).ajouterNomsSequences(alignementProteine);
+	    		matrice = new MatriceDeDistancesProteine();
+	    		((MatriceDeDistancesProteine) matrice).ajouterDistancesObserveesProteines(alignementProteine);
+	    		((MatriceDeDistancesProteine) matrice).ajouterNomsSequences(alignementProteine);
 	    	} else if (isDna) {
-	    		matrice = new MatriceDeDistanceAdn();
-	    		//((MatriceDeDistanceAdn) matrice).ajouterDistancesEvolutivesAdn(alignementAdn);
-	    		((MatriceDeDistanceAdn) matrice).ajouterDistancesObserveesAdn(alignementAdn);
-	    		((MatriceDeDistanceAdn) matrice).ajouterNomsSequences(alignementAdn);
+	    		matrice = new MatriceDeDistancesAdn();
+	    		((MatriceDeDistancesAdn) matrice).ajouterDistancesEvolutivesAdn(alignementAdn);
+	    		//((MatriceDeDistancesAdn) matrice).ajouterDistancesObserveesAdn(alignementAdn);
+	    		((MatriceDeDistancesAdn) matrice).ajouterNomsSequences(alignementAdn);
 	    	} else {
 	    		JOptionPane.showMessageDialog(null, "Aucun alignement trouvé", "Erreur", JOptionPane.ERROR_MESSAGE);
 	    		return;
@@ -455,9 +582,9 @@ public class InterfaceUtilisateur {
 	   		String cheminSvg = cheminNewick.replace(".nwk",".svg");  // Chemin du fichier SVG (automatiquement enregistré au même chemin que l'utilisateur a choisi pour Newick)       
 	   		// Générer le fichier SVG
 	   		fichierSvg = new FichierImageArbre(fichierNewick);
-	   		fichierSvg.genererImageArbreUpgma(cheminNewick, cheminSvg);        
+	   		fichierSvg.genererImageArbre(cheminNewick, cheminSvg);        
     		JOptionPane.showMessageDialog(null, "Arbre généré avec succès !\n" +
-	   				"Arbre enregistré dans : " + cheminSvg + "\n");
+    				"Format de Newick et format svg de l'arbre enregistrés dans " + cheminNewick + "\n");
 	    } catch (IllegalStateException ex) {
 	    	JOptionPane.showMessageDialog(null, ex.getMessage(), "Erreur d'alignement", JOptionPane.ERROR_MESSAGE);
 	   	} catch (IOException ioEx) {
@@ -468,19 +595,23 @@ public class InterfaceUtilisateur {
 	    }
 	}
 	
-	// Méthode qui vérifie que l'alignement est valide, crée la matrice, exécute l'algo NJ, crée le format de Newick et l'image SVG de l'arbre
+	/**
+     * Vérifie que l'alignement est valide et exécute l'algorithme NJ pour générer un arbre.
+     *
+     * @throws IllegalStateException si l'alignement n'est pas valide
+     */
 	private void executerAlgoNj() {
 		try {
 			verifierAlignement();
 	        if (isProtein) {
-	            matrice = new MatriceDeDistanceProteine();
-	            ((MatriceDeDistanceProteine) matrice).ajouterDistancesObserveesProteines(alignementProteine);
-	            ((MatriceDeDistanceProteine) matrice).ajouterNomsSequences(alignementProteine);
+	            matrice = new MatriceDeDistancesProteine();
+	            ((MatriceDeDistancesProteine) matrice).ajouterDistancesObserveesProteines(alignementProteine);
+	            ((MatriceDeDistancesProteine) matrice).ajouterNomsSequences(alignementProteine);
 	        } else if (isDna) {
-	            matrice = new MatriceDeDistanceAdn();
-	          //((MatriceDeDistanceAdn) matrice).ajouterDistancesEvolutivesAdn(alignementAdn);
-	            ((MatriceDeDistanceAdn) matrice).ajouterDistancesObserveesAdn(alignementAdn);
-	            ((MatriceDeDistanceAdn) matrice).ajouterNomsSequences(alignementAdn);
+	            matrice = new MatriceDeDistancesAdn();
+	            //((MatriceDeDistancesAdn) matrice).ajouterDistancesEvolutivesAdn(alignementAdn);
+	            ((MatriceDeDistancesAdn) matrice).ajouterDistancesObserveesAdn(alignementAdn);
+	            ((MatriceDeDistancesAdn) matrice).ajouterNomsSequences(alignementAdn);
 	        } else {
 	            JOptionPane.showMessageDialog(null, "Aucun alignement trouvé", "Erreur", JOptionPane.ERROR_MESSAGE);
 	            return;
@@ -495,9 +626,11 @@ public class InterfaceUtilisateur {
 	        fichierNewick.genererFichierNewick(cheminNewick);        	       
 	        String cheminSvg = cheminNewick.replace(".nwk",".svg");        
 	        fichierSvg = new FichierImageArbre(fichierNewick); // Générer le fichier SVG
-	        fichierSvg.genererImageArbreNj(cheminNewick, cheminSvg);	        
+	        fichierSvg.genererImageArbre(cheminNewick, cheminSvg);	        
 	        JOptionPane.showMessageDialog(null, "Arbre généré avec succès !\n" +
 	        "Format de Newick et image SVG enregistrés dans : " + cheminNewick + "\n");
+	        JOptionPane.showMessageDialog(null, "Arbre généré avec succès !\n" +
+	    	        "Format de Newick et format svg de l'arbre enregistrés dans : " + cheminNewick + "\n");
 		} catch (IllegalStateException ex) {
 			JOptionPane.showMessageDialog(null, ex.getMessage(), "Erreur d'alignement", JOptionPane.ERROR_MESSAGE);
 		} catch (IOException ioEx) {
@@ -508,7 +641,14 @@ public class InterfaceUtilisateur {
 	    }
 	}
 	
-	// Méthode qui vérifie que l'alignement est réalisé
+	/**
+     * Vérifie que l'alignement a été réalisé.
+     *
+     * @throws IllegalStateException si l'alignement protéique n'est pas réalisé 
+     *         alors que l'objet est une protéine.
+     * @throws IllegalStateException si l'alignement ADN n'est pas réalisé 
+     *         alors que l'objet est de l'ADN.
+     */
 	private void verifierAlignement() {
 	    if (isProtein && alignementProteine == null) {
 	        throw new IllegalStateException("Erreur : alignement protéique non réalisé.");
@@ -517,7 +657,14 @@ public class InterfaceUtilisateur {
 	    }
 	}
 	
-	// Méthode qui renvoie le chemin choisit par l'utilisateur dans la boite de dialogue
+	/**
+    * Demande à l'utilisateur de choisir un chemin de fichier 
+    * pour enregistrer le résultat.
+    *
+    * @param titre Le titre de la boîte de dialogue pour le choix du chemin.
+    * @return Le chemin du fichier choisi par l'utilisateur.
+    * @throws IOException si la sauvegarde est annulée par l'utilisateur.
+    */
 	private String demanderCheminFichier(String titre) throws IOException {
 	    JFileChooser fileChooser = new JFileChooser();
 	    fileChooser.setDialogTitle(titre);
@@ -526,7 +673,7 @@ public class InterfaceUtilisateur {
 	        String chemin = fileChooser.getSelectedFile().getAbsolutePath();        
 	        if (!chemin.endsWith(".nwk")) { // Si l'utilisateur n'a pas spécifié l'extension, l'ajouter automatiquement
 	            chemin += ".nwk";
-	        }
+	      }
 	        return chemin;
 	    } else {
 	        throw new IOException("Sauvegarde annulée par l'utilisateur.");

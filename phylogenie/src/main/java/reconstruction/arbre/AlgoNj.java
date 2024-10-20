@@ -1,18 +1,38 @@
 package reconstruction.arbre;
 
-public class AlgoNj extends MethodeConstructionArbre{
+/**
+ * La classe AlgoNj implémente l'algorithme Neighbor-Joining
+ * pour reconstruire un arbre phylogénétique à partir d'une matrice de distances.
+ * Elle hérite de la classe MethodeConstructionArbre et corrige la matrice de distances à chaque étape 
+ * en fonction des divergences entre les séquences, 
+ * puis fusionnent les deux clusters qui minimisent cette distance corrigée.
+ */
+public class AlgoNj extends MethodeConstructionArbre{ // A REVOIR
 	
-	public AlgoNj (MatriceDeDistance m) {
+	/**
+     * Constructeur qui initialise l'algorithme avec une matrice de distances donnée.
+     * 
+     * @param m La matrice de distances entre les séquences.
+     */
+	public AlgoNj (MatriceDeDistances m) {
 		super(m);
 	}
 	
-	// Méthode qui exécute l'algo NJ, fusionne les clusters jusqu'à ce qu'il ne reste qu'un seul cluster (racine de l'arbre)
+	/**
+     * Exécute l'algorithme Neighbor-Joining 
+     * Calcul les divergences pour chaque séquence.
+     * Corrige la matrice de distances.
+     * Sélectionne les deux clusters les plus proches à fusionner.
+     * Fusionne les clusters et met à jour la matrice
+     * Répète le processus jusqu'à ce qu'il ne reste qu'un seul cluster.
+     * @return Le dernier cluster.
+     */
     public Noeud executerNJ() {
         while (n > 2) {
         	double[] divergences = calculerDivergence();
-        	MatriceDeDistance matriceCorrigee = calculerMatriceCorrigee(divergences);
-            System.out.println("Affichage de la matrice corrigée : ");
-            matriceCorrigee.afficherMatrice();
+        	MatriceDeDistances matriceCorrigee = calculerMatriceCorrigee(divergences);
+            System.out.println("Affichage de la matrice corrigée : "); // affichage
+            matriceCorrigee.afficherMatrice(); // affichage
             int[] clustersAFusionner = trouverClustersAFusionner(matriceCorrigee);
             int cluster1 = clustersAFusionner[0];
             int cluster2 = clustersAFusionner[1];
@@ -27,14 +47,16 @@ public class AlgoNj extends MethodeConstructionArbre{
             majMatrice(cluster1, cluster2);
             System.out.println("Affichage de la matrice mise à jour: ");
             matrice.afficherMatrice();
-        }
-        // Fusion finale des deux derniers clusters
-        fusionnerClustersRestants();
-        // Retourner le dernier cluster comme racine
-        return clusters.get(0);
+        }        
+        fusionnerClustersRestants(); // Fusion finale des deux derniers clusters
+        return clusters.get(0); // Retourne le dernier cluster fusionné
     }
       
-    // Méthode pour calculer la divergence r(i) pour chaque séquence
+    /**
+     * Calcule les divergences (r(i)) pour chaque séquence en sommant les distances avec les autres séquences.
+     * 
+     * @return Un tableau contenant la divergence de chaque séquence.
+     */
     private double[] calculerDivergence() {
     	System.out.println("Calcul des sommes des distances pour chaque séquence:");
         double[] divergences = new double[n];
@@ -50,48 +72,67 @@ public class AlgoNj extends MethodeConstructionArbre{
         return divergences;
     }
     
-    // Méthode pour calculer la nouvelle matrice corrigee en utilisant les divergences de chacun des taxons
-    private MatriceDeDistance calculerMatriceCorrigee(double [] divergences) {
-        double[][] matriceCorrigee = new double[n][n];
-        // Calcul des valeurs de la matrice corrigée
-        for (int i = 0; i < n; i++) {
+    /**
+     * Calcule la matrice de distances corrigée en fonction des divergences de chaque séquence.
+     * La matrice corrigée est utilisée pour déterminer les clusters à fusionner.
+     * 
+     * @param divergences Les divergences calculées pour chaque séquence.
+     * @return Une nouvelle matrice de distances corrigée.
+     */
+    private MatriceDeDistances calculerMatriceCorrigee(double [] divergences) {
+        double[][] matriceCorrigee = new double[n][n];    
+        for (int i = 0; i < n; i++) { // Calcul des valeurs de la matrice corrigée
             for (int j = 0; j < n; j++) {
                 if (i != j) {
                     matriceCorrigee[i][j] = matrice.getDistance(i, j) - (divergences[i] + divergences[j]) / (n - 2); 
                     matriceCorrigee[j][i] = matriceCorrigee[i][j];
                 }
             }    
-        }
-        // Créer et retourner un nouvel objet MatriceDeDistance avec la matrice corrigée
-        MatriceDeDistance matriceDistanceCorrigee = new MatriceDeDistance(matriceCorrigee, matrice.getNomsSequences());
+        }       
+        MatriceDeDistances matriceDistanceCorrigee = new MatriceDeDistances(matriceCorrigee, matrice.getNomsSequences()); // Crée et retourne un nouvel objet MatriceDeDistance avec la matrice corrigée
         return matriceDistanceCorrigee;            
     }
     
-    // Méthode pour calculer la distance d'une séquence au nœud u
+    /**
+     * Calcule la distance d'une séquence au nœud u lors de la fusion de clusters.
+     * 
+     * @param dij La distance entre les clusters i et j.
+     * @param ri La divergence de la séquence i.
+     * @param rj La divergence de la séquence j.
+     * @return La distance de la séquence i au nœud u.
+     */
     private double calculerDistanceAuNoeud(double dij, double ri, double rj) {
         return dij / 2 + (ri - rj) / (2 * (n - 2));
     }
     
-    
+    /**
+     * Fusionne deux clusters en un nouveau cluster et met à jour leurs distances au nœud de fusion.
+     * 
+     * @param cluster1 L'indice du premier cluster à fusionner.
+     * @param cluster2 L'indice du deuxième cluster à fusionner.
+     * @param Siu La distance du cluster1 au nouveau nœud.
+     * @param Sju La distance du cluster2 au nouveau nœud.
+     */
     private void fusionnerClusters(int cluster1, int cluster2, double Siu, double Sju) {
         Noeud clusterGauche = clusters.get(cluster1);
         Noeud clusterDroit = clusters.get(cluster2);
-        Noeud nouveauCluster = new Noeud(clusterGauche.nom + clusterDroit.nom);
-        // Ajouter les enfants au nouveau cluster
-        nouveauCluster.ajouterEnfant(clusterGauche);
-        nouveauCluster.ajouterEnfant(clusterDroit);
-        // Mettre à jour la distance
-        clusterGauche.setDistance(Siu);
-        clusterDroit.setDistance(Sju);
-        // Remplacer le cluster fusionné et retirer le cluster fusionné
-        clusters.set(cluster1, nouveauCluster);
-        clusters.remove(cluster2);
-        // Décrémenter le nombre de clusters restants
-        n--; 
+        Noeud nouveauCluster = new Noeud(clusterGauche.nom + clusterDroit.nom);       
+        nouveauCluster.ajouterEnfant(clusterGauche); // Ajoute les enfants au nouveau cluster
+        nouveauCluster.ajouterEnfant(clusterDroit); 
+        clusterGauche.setDistance(Siu); // Met à jour la distance
+        clusterDroit.setDistance(Sju);  
+        clusters.set(cluster1, nouveauCluster); // Remplace le cluster1 fusionné
+        clusters.remove(cluster2);  // Retire le cluster2 fusionné     
+        n--; // Décrémenter le nombre de clusters restants
         System.out.println("Fusion des clusters " + clusterGauche.nom + " et " + clusterDroit.nom + " pour former " + nouveauCluster.nom);
     }
     
-    // Méthode pour mettre à jour la matrice de distances après la fusion de clusters
+    /**
+     * Met à jour la matrice de distances après la fusion de deux clusters.
+     * 
+     * @param cluster1 L'indice du premier cluster fusionné.
+     * @param cluster2 L'indice du deuxième cluster fusionné.
+     */
     private void majMatrice(int cluster1, int cluster2) {
         for (int i = 0; i < n; i++) {
             if (i != cluster1 && i!= cluster2) {
@@ -100,12 +141,13 @@ public class AlgoNj extends MethodeConstructionArbre{
                 matrice.setDistance(cluster1, i, nouvelleDistance);
             }
         }
-        //matrice.diminuerTailleMatrice(cluster2); ne fonctionne pas pour NJ = à revoir
-        matrice.removeCluster(cluster2);
+        matrice.diminuerTailleMatrice(cluster2); 
         matrice.setNomsSequences(cluster1, "U");
     }
     
- // Méthode pour fusionner les deux derniers clusters restants
+    /**
+     * Fusionne les deux derniers clusters restants.
+     */
     private void fusionnerClustersRestants() {
         Noeud dernierCluster1 = clusters.get(0);
         Noeud dernierCluster2 = clusters.get(1);
