@@ -163,7 +163,7 @@ public class AlignementMultipleProteine extends AlignementMultiple {
 	        }
 	    }catch (Exception ex) {
 	        	gestionException(ex, "Erreur -> lors de l'alignement multiple des séquences protéiques.");
-	        	ex.printStackTrace(); // Imprimer la trace de la pile pour le débogage
+	        	//ex.printStackTrace(); // Imprimer la trace de la pile pour le débogage
 	        }
 	        return alignement; 
 	}

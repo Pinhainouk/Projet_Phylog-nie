@@ -1,0 +1,36 @@
+# script_root_nj.R
+
+# Récupération des arguments de ligne de commande
+args = commandArgs(trailingOnly = TRUE)
+cheminFichierNewick <- args[1]
+cheminFichierSvg <- args[2]
+titre_arbre <- args[3]
+
+# Chargement du package ape
+library(ape)
+library(phangorn)
+library(maps)
+library(phytools)
+
+# Lire l'arbre depuis le fichier Newick
+arbre = read.tree(cheminFichierNewick) # objet "phylo"
+
+# Ouvrir un périphérique graphique pour SVG
+svg(cheminFichierSvg, width = 14, height = 10)
+
+# Générer le graphique de l'arbre
+arbre_pointMoyen <- midpoint(arbre) # enracinement au point moyen sur un objet "phylo"
+plot(arbre_pointMoyen, main = titre_arbre, cex.main = 2, edge.width=3, cex = 1.2, tip.color = "aquamarine4", font = 4)
+nodelabels(pch = 19, cex = 1.5, col = "aquamarine4")
+edgelabels(adj = c(0.5, -0.25), round(arbre_pointMoyen$edge.length, 3), cex = 1.0, frame = "none", offset = 3, col = "aquamarine4")
+axisPhylo()
+
+# Fermer le périphérique graphique sans la sortie null device 1 qui indique que R a fermé le périphérique graphique.
+invisible(dev.off())
+
+# Valeurs bootstrap: calculs avec R Décomposition en clades
+# boot.phylo(phy, x, FUN, B = 100, block = 1, trees = FALSE, quiet = FALSE) # fait une analyse bootstrap complète
+# type="p", 
+# use.edge.length=FALSE
+#root.edge=TRUE
+

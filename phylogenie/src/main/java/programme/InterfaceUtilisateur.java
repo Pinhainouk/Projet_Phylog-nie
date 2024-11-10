@@ -167,7 +167,7 @@ public class InterfaceUtilisateur {
         JButton boutonAide = new JButton("Aide ?");
         boutonAide.setFont(new Font("TimesRoman", Font.ITALIC, 24));
         boutonAide.setForeground(Color.BLACK);
-        boutonAide.setBackground(new java.awt.Color(189, 189, 189));
+        boutonAide.setBackground(new java.awt.Color(28,144,153));
         boutonAide.setPreferredSize(new Dimension(200, 100));
         boutonAide.addActionListener(e -> afficherMessageAide());
         panelBoutonAide.add(boutonAide);
@@ -190,7 +190,7 @@ public class InterfaceUtilisateur {
                        + "6. Cliquez sur -Générer l'arbre- : "
                        + "Cette action ouvrira une boite de dialogue vous invitant à choisir le chemin où \n"
                        + "enregistrer le fichier au format de Newick et enregistrera automatiquement l'arbre "
-                       + "au format image SVG au même emplacement."
+                       + "au format image SVG au même emplacement. \n"
                        + "L'image de l'arbre s'ouvre automatique après l'enregistrement.";
         JOptionPane.showMessageDialog(null, message, "Aide", JOptionPane.INFORMATION_MESSAGE);
     }
@@ -566,8 +566,8 @@ public class InterfaceUtilisateur {
 	    		((MatriceDeDistancesProteine) matrice).ajouterNomsSequences(alignementProteine);
 	    	} else if (isDna) {
 	    		matrice = new MatriceDeDistancesAdn();
-	    		((MatriceDeDistancesAdn) matrice).ajouterDistancesEvolutivesAdn(alignementAdn);
-	    		//((MatriceDeDistancesAdn) matrice).ajouterDistancesObserveesAdn(alignementAdn);
+	    		((MatriceDeDistancesAdn) matrice).ajouterDistancesEvolutivesAdn(alignementAdn); // distances évolutives ADN
+	    		//((MatriceDeDistancesAdn) matrice).ajouterDistancesObserveesAdn(alignementAdn); // distances observées ADN
 	    		((MatriceDeDistancesAdn) matrice).ajouterNomsSequences(alignementAdn);
 	    	} else {
 	    		JOptionPane.showMessageDialog(null, "Aucun alignement trouvé", "Erreur", JOptionPane.ERROR_MESSAGE);
@@ -584,7 +584,7 @@ public class InterfaceUtilisateur {
 	   		String cheminSvg = cheminNewick.replace(".nwk",".svg");  // Chemin du fichier SVG (automatiquement enregistré au même chemin que l'utilisateur a choisi pour Newick)       
 	   		// Générer le fichier SVG
 	   		fichierSvg = new FichierImageArbre(fichierNewick);
-	   		fichierSvg.genererImageArbre(cheminNewick, cheminSvg);        
+	   		fichierSvg.genererImageArbreUpgma(cheminNewick, cheminSvg);        
     		JOptionPane.showMessageDialog(null, "Arbre généré avec succès !\n" +
     				"Format de Newick et format SVG de l'arbre enregistrés dans " + cheminNewick + "\n");
 	    } catch (IllegalStateException ex) {
@@ -611,8 +611,8 @@ public class InterfaceUtilisateur {
 	            ((MatriceDeDistancesProteine) matrice).ajouterNomsSequences(alignementProteine);
 	        } else if (isDna) {
 	            matrice = new MatriceDeDistancesAdn();
-	            ((MatriceDeDistancesAdn) matrice).ajouterDistancesEvolutivesAdn(alignementAdn);
-	            //((MatriceDeDistancesAdn) matrice).ajouterDistancesObserveesAdn(alignementAdn);
+	            ((MatriceDeDistancesAdn) matrice).ajouterDistancesEvolutivesAdn(alignementAdn); // distances évolutives ADN
+	            //((MatriceDeDistancesAdn) matrice).ajouterDistancesObserveesAdn(alignementAdn); //distances observées ADN 
 	            ((MatriceDeDistancesAdn) matrice).ajouterNomsSequences(alignementAdn);
 	        } else {
 	            JOptionPane.showMessageDialog(null, "Aucun alignement trouvé", "Erreur", JOptionPane.ERROR_MESSAGE);
@@ -628,7 +628,8 @@ public class InterfaceUtilisateur {
 	        fichierNewick.genererFichierNewick(cheminNewick);        	       
 	        String cheminSvg = cheminNewick.replace(".nwk",".svg");        
 	        fichierSvg = new FichierImageArbre(fichierNewick); // Générer le fichier SVG
-	        fichierSvg.genererImageArbre(cheminNewick, cheminSvg);	        
+	        fichierSvg.genererImageArbreNjEnracine(cheminNewick, cheminSvg); // pour générer NJ enraciné point moyen
+	        //fichierSvg.genererImageArbreNjNonEnracine(cheminNewick, cheminSvg); // pour générer NJ non enraciné
 	        JOptionPane.showMessageDialog(null, "Arbre généré avec succès !\n" +
 	        "Format de Newick et image SVG enregistrés dans : " + cheminNewick + "\n");
 		} catch (IllegalStateException ex) {

@@ -30,13 +30,13 @@ public class MatriceDeDistancesProteine extends MatriceDeDistances{
 		int nombreSequences = sequencesAlignees.getAlignedSequences().size();
 		matrice = new ArrayList<>(nombreSequences);
 		System.out.println("Nombre de séquences alignées: " + nombreSequences);
-		for (int i = 0; i < nombreSequences; i++) { // Initialisez la matrice avec des ArrayList
+		for (int i = 0; i < nombreSequences; i++) { // Initialise la matrice avec des ArrayList
 	        matrice.add(new ArrayList<>(Collections.nCopies(nombreSequences, 0.0))); // Remplissage avec 0.0
 	    }	
 		for (int i = 0; i < nombreSequences; i++) {
-			for (int j = i + 1; j < nombreSequences; j++) { //i+2?			
+			for (int j = i + 1; j < nombreSequences; j++) {		
 				if (i >= 0 && i < nombreSequences && j >= 0 && j < nombreSequences) { // Vérifie les index avant d'accéder aux séquences
-					double distance = calculerDistanceObserveeProteine(sequencesAlignees.getAlignedSequence(i+1), sequencesAlignees.getAlignedSequence(j+1)); // cf getAlignedSequence
+					double distance = calculerDistanceObserveeProteine(sequencesAlignees.getAlignedSequence(i+1), sequencesAlignees.getAlignedSequence(j+1)); 
 					matrice.get(i).set(j, distance);
 	                matrice.get(j).set(i, distance);
 				} else {
@@ -72,7 +72,8 @@ public class MatriceDeDistancesProteine extends MatriceDeDistances{
      * @param sequence2 La deuxième séquence alignée.
      * @return La distance observée entre les deux séquences.
      */
-	public double calculerDistanceObserveeProteine(AlignedSequence<ProteinSequence, AminoAcidCompound> sequence1, AlignedSequence<ProteinSequence, AminoAcidCompound> sequence2) {
+	public double calculerDistanceObserveeProteine(AlignedSequence<ProteinSequence, AminoAcidCompound> sequence1, 
+			AlignedSequence<ProteinSequence, AminoAcidCompound> sequence2) {
 		double longueurSequencesAlignees = sequence1.getLength(); // Les séquences alignées font toutes la même taille
 		double correspondances = 0.0; // Nombre de similitudes initialisé à 0	
 		for (int i = 0; i < longueurSequencesAlignees; i++) {
@@ -80,7 +81,7 @@ public class MatriceDeDistancesProteine extends MatriceDeDistances{
 				correspondances = correspondances + 1;
 			}
 		}
-		double similarite = correspondances / longueurSequencesAlignees; // Calcule la proportion de similarité
+		double similarite = correspondances / longueurSequencesAlignees; // Calcule la proportion de similarités
 		double distanceObservee = 1 - similarite; // Calcule la proportion de différences
 	    return distanceObservee;
 	}

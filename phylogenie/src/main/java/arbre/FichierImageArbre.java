@@ -27,13 +27,99 @@ public class FichierImageArbre {
      * @param cheminFichierNewick Le chemin du fichier Newick généré précédemment.
      * @param cheminFichierSvg Le chemin où le fichier SVG sera sauvegardé.
      */
-    public void genererImageArbre(String cheminFichierNewick, String cheminFichierSvg) { 
+    public void genererImageArbreUpgma(String cheminFichierNewick, String cheminFichierSvg) { 
         try {
-            String cheminScriptR = "/home/elodie/Documents/Projet_tuteure_phylogenie/Script_root.R"; // Le chemin absolu du script R          
+            String cheminScriptR = "/home/elodie/Documents/Projet_tuteure_phylogenie/Script_root_upgma.R"; // Le chemin absolu du script R pour générer l'arbre enraciné UPGMA       
             String nomFichierNewick = Paths.get(cheminFichierNewick).getFileName().toString().replaceFirst("[.][^.]+$", ""); // Extrait le nom du fichier sans le chemin et l'extension
             String[] commande = new String[] {"Rscript", cheminScriptR, cheminFichierNewick, cheminFichierSvg, nomFichierNewick}; // Commande pour exécuter le script R
-            System.out.println("Chemin du fichier Newick : " + cheminFichierNewick); // Debogage
-            System.out.println("Chemin du fichier SVG : " + cheminFichierSvg); // Debogage         
+            System.out.println("Chemin du fichier Newick : " + cheminFichierNewick); // Débogage
+            System.out.println("Chemin du fichier SVG : " + cheminFichierSvg); // Débogage         
+            Process process = Runtime.getRuntime().exec(commande); // Exécution de la commande       
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream())); // Lire la sortie du script R
+            String ligne;
+            while ((ligne = reader.readLine()) != null) {
+                System.out.println(ligne);
+            }         
+            BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream())); //Lire la sortie d'erreur du script R
+            String ligneErreur;
+            while ((ligneErreur = errorReader.readLine()) != null) {
+                System.err.println(ligneErreur);
+            }          
+            int exitCode = process.waitFor(); // Vérifier si le processus s'est terminé correctement
+            if (exitCode == 0) {
+                System.out.println("Fichier SVG généré : " + cheminFichierSvg);                
+                File fichierSvg = new File(cheminFichierSvg); 
+                if (Desktop.isDesktopSupported()) {
+                    Desktop.getDesktop().open(fichierSvg); // Ouvrir le fichier SVG automatiquement
+                    System.out.println("Fichier SVG ouvert : " + cheminFichierSvg); // Debogage
+                } else {
+                    System.err.println("L'ouverture automatique n'est pas supportée sur ce système.");
+                }
+            } else {
+               System.err.println("Erreur lors de l'exécution du script R.");
+            }
+
+        } catch (IOException | InterruptedException e) {
+           e.printStackTrace();
+        }
+    }
+    
+    /**
+     * Méthode pour générer un fichier SVG représentant l'arbre NJ enraciné en appelant un script R.
+     * 
+     * @param cheminFichierNewick Le chemin du fichier Newick généré précédemment.
+     * @param cheminFichierSvg Le chemin où le fichier SVG sera sauvegardé.
+     */
+    public void genererImageArbreNjEnracine(String cheminFichierNewick, String cheminFichierSvg) { 
+        try {
+            String cheminScriptR = "/home/elodie/Documents/Projet_tuteure_phylogenie/Script_root_nj.R"; // Le chemin absolu du script R pour générer l'arbre NJ enraciné au point moyen       
+            String nomFichierNewick = Paths.get(cheminFichierNewick).getFileName().toString().replaceFirst("[.][^.]+$", ""); // Extrait le nom du fichier sans le chemin et l'extension
+            String[] commande = new String[] {"Rscript", cheminScriptR, cheminFichierNewick, cheminFichierSvg, nomFichierNewick}; // Commande pour exécuter le script R
+            System.out.println("Chemin du fichier Newick : " + cheminFichierNewick); // Débogage
+            System.out.println("Chemin du fichier SVG : " + cheminFichierSvg); // Débogage         
+            Process process = Runtime.getRuntime().exec(commande); // Exécution de la commande       
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream())); // Lire la sortie du script R
+            String ligne;
+            while ((ligne = reader.readLine()) != null) {
+                System.out.println(ligne);
+            }         
+            BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream())); //Lire la sortie d'erreur du script R
+            String ligneErreur;
+            while ((ligneErreur = errorReader.readLine()) != null) {
+                System.err.println(ligneErreur);
+            }          
+            int exitCode = process.waitFor(); // Vérifier si le processus s'est terminé correctement
+            if (exitCode == 0) {
+                System.out.println("Fichier SVG généré : " + cheminFichierSvg);                
+                File fichierSvg = new File(cheminFichierSvg); 
+                if (Desktop.isDesktopSupported()) {
+                    Desktop.getDesktop().open(fichierSvg); // Ouvrir le fichier SVG automatiquement
+                    System.out.println("Fichier SVG ouvert : " + cheminFichierSvg); // Debogage
+                } else {
+                    System.err.println("L'ouverture automatique n'est pas supportée sur ce système.");
+                }
+            } else {
+               System.err.println("Erreur lors de l'exécution du script R.");
+            }
+
+        } catch (IOException | InterruptedException e) {
+           e.printStackTrace();
+        }
+    }
+    
+    /**
+     * Méthode pour générer un fichier SVG représentant l'arbre NJ non enraciné en appelant un script R.
+     * 
+     * @param cheminFichierNewick Le chemin du fichier Newick généré précédemment.
+     * @param cheminFichierSvg Le chemin où le fichier SVG sera sauvegardé.
+     */
+    public void genererImageArbreNjNonEnracine(String cheminFichierNewick, String cheminFichierSvg) { 
+        try {
+            String cheminScriptR = "/home/elodie/Documents/Projet_tuteure_phylogenie/Script_unroot_nj.R"; // Le chemin absolu du script R pour générer l'arbre NJ non enraciné
+            String nomFichierNewick = Paths.get(cheminFichierNewick).getFileName().toString().replaceFirst("[.][^.]+$", ""); // Extrait le nom du fichier sans le chemin et l'extension
+            String[] commande = new String[] {"Rscript", cheminScriptR, cheminFichierNewick, cheminFichierSvg, nomFichierNewick}; // Commande pour exécuter le script R
+            System.out.println("Chemin du fichier Newick : " + cheminFichierNewick); // Débogage
+            System.out.println("Chemin du fichier SVG : " + cheminFichierSvg); // Débogage         
             Process process = Runtime.getRuntime().exec(commande); // Exécution de la commande       
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream())); // Lire la sortie du script R
             String ligne;
